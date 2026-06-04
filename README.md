@@ -1,7 +1,7 @@
 # portuguese-fake-news-detection
 
 Binary classification of Portuguese news (real vs fake) using Fake.br-Corpus.
-This repository follows a notebook-first workflow focused on [v4.ipynb](v4.ipynb).
+This repository follows a notebook-first workflow focused on [main.ipynb](main.ipynb).
 
 ## Project Goal
 
@@ -15,7 +15,7 @@ Target labels:
 
 ## Repository Structure
 
-- [v4.ipynb](v4.ipynb): main notebook with setup, corpus consolidation, EDA, preprocessing, and analysis.
+- [main.ipynb](main.ipynb): main notebook with setup, corpus consolidation, EDA, preprocessing, and analysis.
 - [AGENTS.md](AGENTS.md): workflow and project operating rules.
 
 ## Dataset
@@ -37,7 +37,7 @@ Target labels:
 
 ## How To Reproduce
 
-1. Open [v4.ipynb](v4.ipynb) in Google Colab.
+1. Open [main.ipynb](main.ipynb) in Google Colab.
 2. Mount Google Drive when prompted.
 3. Confirm corpus path exists.
 4. Run notebook cells in order (Setup -> Corpus -> EDA -> Preprocessing).

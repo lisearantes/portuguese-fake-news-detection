@@ -2,7 +2,7 @@
 
 ## Project Scope
 
-- This workspace is notebook-first and centered on [v4.ipynb](v4.ipynb).
+- This workspace is notebook-first and centered on [main.ipynb](main.ipynb).
 - Topic: binary news classification (Real vs Fake) in Portuguese.
 - Methodology: compare traditional NLP/ML pipeline and Transformer-based models.
 - Runtime context: Google Colab remote kernel, connected to a university Google account.
