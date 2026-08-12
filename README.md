@@ -1,66 +1,64 @@
-# portuguese-fake-news-detection
+# classificador-fake-br
 
-Binary classification of Portuguese news (real vs fake) using Fake.br-Corpus.
-This repository follows a notebook-first workflow focused on [main.ipynb](main.ipynb).
+Análise e classificação binária de notícias falsas em português brasileiro usando o Fake.br-Corpus, comparando pipelines tradicionais de NLP/ML (TF-IDF + SVM, Regressão Logística) e modelos baseados em Transformers.
 
-## Project Goal
+Este repositório segue um fluxo de trabalho centrado no notebook [main.ipynb](main.ipynb).
 
-Build and compare two approaches for Portuguese fake news detection:
-- traditional NLP/ML pipeline;
-- Transformer-based models.
+## Objetivo
 
-Target labels:
-- `label = 0`: real news
-- `label = 1`: fake news
+Construir e comparar duas abordagens para detecção de fake news em português:
+- pipeline tradicional de NLP/ML (TF-IDF + classificadores lineares);
+- modelos baseados em Transformers.
 
-## Repository Structure
+Rótulos do corpus:
+- `label = 0`: notícia verdadeira
+- `label = 1`: notícia falsa
 
-- [main.ipynb](main.ipynb): main notebook with setup, corpus consolidation, EDA, preprocessing, and analysis.
-- [AGENTS.md](AGENTS.md): workflow and project operating rules.
+## Estrutura do Repositório
+
+- [main.ipynb](main.ipynb): notebook principal com setup, carregamento do corpus, EDA, pré-processamento, vetorização TF-IDF e classificação.
+- [AGENTS.md](AGENTS.md): regras de fluxo de trabalho e convenções do projeto.
 
 ## Dataset
 
-- Primary corpus: Fake.br-Corpus
-- Expected Google Drive location in Colab:
+- Corpus: [Fake.br-Corpus](https://github.com/roneysco/Fake.br-Corpus)
+- Caminho esperado no Google Drive (Colab):
   - `/content/drive/MyDrive/Fake.br-Corpus/`
 
-## Execution Environment
+## Ambiente de Execução
 
 - Google Colab
 - Python 3.x
-- Key libraries used in the notebook include:
-  - pandas
-  - seaborn
-  - matplotlib
-  - nltk
-  - spacy (`pt_core_news_sm`)
+- Principais bibliotecas:
+  - `pandas`, `numpy`
+  - `seaborn`, `matplotlib`
+  - `nltk`, `spacy` (`pt_core_news_sm`)
+  - `scikit-learn` (TF-IDF, LinearSVC, LogisticRegression)
 
-## How To Reproduce
+## Como Reproduzir
 
-1. Open [main.ipynb](main.ipynb) in Google Colab.
-2. Mount Google Drive when prompted.
-3. Confirm corpus path exists.
-4. Run notebook cells in order (Setup -> Corpus -> EDA -> Preprocessing).
+1. Abra [main.ipynb](main.ipynb) no Google Colab.
+2. Monte o Google Drive quando solicitado.
+3. Confirme que o caminho do corpus existe.
+4. Execute as células em ordem: Setup → Corpus → EDA → Pré-processamento → Modelagem.
 
-## Current Phase
+## Fase Atual
 
-The project currently has:
-- environment setup and dependency loading;
-- corpus consolidation with metadata and labels;
-- preprocessing and exploratory diagnostics.
+O projeto conta com:
+- setup do ambiente e carregamento de dependências;
+- consolidação do corpus com metadados e rótulos;
+- análise exploratória (EDA) com visualizações;
+- pré-processamento de texto (limpeza, remoção de stopwords, lematização);
+- vetorização TF-IDF com unigramas e bigramas;
+- classificação binária com **Linear SVC** e **Regressão Logística**.
 
-Next phase:
-- train/evaluate baseline ML models (for example TF-IDF + linear classifier);
-- compare against Transformer models with consistent metrics.
+Próxima fase:
+- comparação com modelos baseados em Transformers (ex.: BERTimbau).
 
-## Suggested Metrics
+## Métricas Avaliadas
 
-- F1-score
-- Precision
+- Acurácia
+- F1-Score (ponderado)
+- Precisão
 - Recall
 - Confusion matrix
-
-## License
-
-Define a license before external distribution.# classificador-fake-br
-# classificador-fake-br
