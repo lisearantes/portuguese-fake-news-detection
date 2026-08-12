@@ -7,10 +7,12 @@ Este repositório segue um fluxo de trabalho centrado no notebook [main.ipynb](m
 ## Objetivo
 
 Construir e comparar duas abordagens para detecção de fake news em português:
+
 - pipeline tradicional de NLP/ML (TF-IDF + classificadores lineares);
 - modelos baseados em Transformers.
 
 Rótulos do corpus:
+
 - `label = 0`: notícia verdadeira
 - `label = 1`: notícia falsa
 
@@ -45,6 +47,7 @@ Rótulos do corpus:
 ## Fase Atual
 
 O projeto conta com:
+
 - setup do ambiente e carregamento de dependências;
 - consolidação do corpus com metadados e rótulos;
 - análise exploratória (EDA) com visualizações;
@@ -53,6 +56,7 @@ O projeto conta com:
 - classificação binária com **Linear SVC** e **Regressão Logística**.
 
 Próxima fase:
+
 - comparação com modelos baseados em Transformers (ex.: BERTimbau).
 
 ## Métricas Avaliadas
