@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import matplotlib.colors as mcolors
 import seaborn as sns
+from sklearn.decomposition import PCA
 from sklearn.metrics import confusion_matrix
 
 
@@ -82,6 +83,7 @@ def plot_distribuicao_categorias(df):
     plt.tight_layout()
     plt.show()
 
+# TODO: Adicionar docstring
 
 def plot_boxplot_tamanho(df):
     if 'num_palavras_texto' not in df.columns:
@@ -154,6 +156,113 @@ def plot_heatmap_tfidf(X_train_tfidf, tfidf_terms):
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     plt.show()
+
+
+def plot_impacto_vetorizacao_transformer(
+    model,
+    tokenizer,
+    texts,
+    labels,
+    output_path=None,
+    max_samples=500,
+    batch_size=16,
+    max_length=512,
+):
+    """Visualiza a tokenizacao e as representacoes contextuais do Transformer."""
+    import torch
+
+    texts = pd.Series(texts).fillna('').astype(str).reset_index(drop=True)
+    labels = pd.Series(labels).reset_index(drop=True)
+    valid = texts.str.strip().ne('') & labels.notna()
+    texts = texts[valid]
+    labels = labels[valid]
+
+    if len(texts) == 0:
+        raise ValueError('Nao ha textos validos para visualizar.')
+
+    if len(texts) > max_samples:
+        sample_indices = np.linspace(0, len(texts) - 1, max_samples, dtype=int)
+        texts = texts.iloc[sample_indices]
+        labels = labels.iloc[sample_indices]
+
+    device = next(model.parameters()).device
+    model.eval()
+    embeddings = []
+    token_lengths = []
+
+    for start in range(0, len(texts), batch_size):
+        batch_texts = texts.iloc[start:start + batch_size].tolist()
+        encoded = tokenizer(
+            batch_texts,
+            padding=True,
+            truncation=True,
+            max_length=max_length,
+            return_tensors='pt',
+        )
+        encoded = {key: value.to(device) for key, value in encoded.items()}
+        attention_mask = encoded['attention_mask']
+
+        with torch.inference_mode():
+            outputs = model.base_model(
+                **encoded,
+                return_dict=True,
+            )
+
+        hidden_states = outputs.last_hidden_state
+        mask = attention_mask.unsqueeze(-1).to(hidden_states.dtype)
+        pooled = (hidden_states * mask).sum(dim=1) / mask.sum(dim=1).clamp(min=1)
+        embeddings.append(pooled.cpu().numpy())
+        token_lengths.extend(attention_mask.sum(dim=1).cpu().numpy().tolist())
+
+    embeddings = np.vstack(embeddings)
+    token_lengths = np.asarray(token_lengths)
+    if len(embeddings) < 2:
+        raise ValueError('Sao necessarios pelo menos dois textos validos.')
+
+    projection = PCA(n_components=2, random_state=42).fit_transform(embeddings)
+    class_names = np.where(labels.to_numpy().astype(int) == 1, 'Falsa', 'Verdadeira')
+    colors = {'Verdadeira': 'steelblue', 'Falsa': '#c44e52'}
+
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
+    for class_name in ['Verdadeira', 'Falsa']:
+        class_mask = class_names == class_name
+        axes[0].scatter(
+            projection[class_mask, 0],
+            projection[class_mask, 1],
+            s=24,
+            alpha=0.65,
+            color=colors[class_name],
+            label=class_name,
+        )
+        axes[1].hist(
+            token_lengths[class_mask],
+            bins=30,
+            alpha=0.6,
+            color=colors[class_name],
+            label=class_name,
+        )
+
+    _aplicar_estilo_tcc(axes[0], fig)
+    _aplicar_estilo_tcc(axes[1], fig)
+    axes[0].set_xlabel('Componente principal 1', fontdict=_fonte_eixos())
+    axes[0].set_ylabel('Componente principal 2', fontdict=_fonte_eixos())
+    axes[0].set_title('Representacoes contextuais (PCA)')
+    axes[0].legend(frameon=False)
+    axes[1].set_xlabel('Quantidade de tokens', fontdict=_fonte_eixos())
+    axes[1].set_ylabel('Quantidade de noticias', fontdict=_fonte_eixos())
+    axes[1].set_title('Distribuicao apos a tokenizacao')
+    axes[1].legend(frameon=False)
+
+    fig.tight_layout()
+    if output_path is not None:
+        fig.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.show()
+    return fig, {
+        'embeddings': embeddings,
+        'projection': projection,
+        'token_lengths': token_lengths,
+        'labels': labels.to_numpy(),
+    }
 
 
 def plot_confusion_matrix(y_test, y_pred):
