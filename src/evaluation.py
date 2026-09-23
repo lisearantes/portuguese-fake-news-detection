@@ -1,3 +1,6 @@
+from pathlib import Path
+
+import joblib
 import pandas as pd
 from sklearn.svm import LinearSVC
 from sklearn.linear_model import LogisticRegression
@@ -43,3 +46,28 @@ def relatorio_completo(y_test, y_pred, nome_modelo):
     print(f"\n### {nome_modelo}")
     print(classification_report(y_test, y_pred, target_names=['Real', 'Fake']))
     print(f"Acurácia: {accuracy_score(y_test, y_pred):.4f}")
+
+
+ARQUIVOS_MODELOS_CLASSICOS = {
+    'vectorizer': 'vectorizer_tfidf.joblib',
+    'svc': 'modelo_svc.joblib',
+    'lr': 'modelo_lr.joblib',
+}
+MODELOS_CLASSICOS_DIR = Path(__file__).resolve().parents[1] / 'results' / 'modelos'
+
+
+def persistir_modelos_classicos(diretorio, vectorizer, modelo_svc, modelo_lr):
+    """Grava o vetorizador TF-IDF, o Linear SVC e a regressão logística."""
+    diretorio = Path(diretorio)
+    diretorio.mkdir(parents=True, exist_ok=True)
+    artefatos = {
+        'vectorizer': vectorizer,
+        'svc': modelo_svc,
+        'lr': modelo_lr,
+    }
+    caminhos = {}
+    for chave, objeto in artefatos.items():
+        caminho = diretorio / ARQUIVOS_MODELOS_CLASSICOS[chave]
+        joblib.dump(objeto, caminho)
+        caminhos[chave] = caminho
+    return caminhos

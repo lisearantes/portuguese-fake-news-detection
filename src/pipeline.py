@@ -10,10 +10,43 @@
 
 def conecta_drive():
     """
-    Conecta o Google Drive para acessar os dados de treinamento e salvar os resultados.
+    Conecta o Google Drive e devolve a pasta My Drive.
+
+    No Colab, monta o Drive. No computador, usa a pasta sincronizada pelo
+    Google Drive para desktop, ou o caminho em FAKE_BR_DRIVE_ROOT.
     """
-    from google.colab import drive
-    drive.mount('/content/drive')
+    import os
+    from pathlib import Path
+
+    try:
+        from google.colab import drive
+        drive.mount('/content/drive')
+        for nome in ('MyDrive', 'My Drive'):
+            raiz = Path('/content/drive') / nome
+            if raiz.exists():
+                return raiz
+        return Path('/content/drive/MyDrive')
+    except ImportError:
+        pass
+
+    configurado = os.environ.get('FAKE_BR_DRIVE_ROOT')
+    candidatos = []
+    if configurado:
+        candidatos.append(Path(configurado).expanduser())
+    candidatos.extend([
+        Path.home() / 'Google Drive' / 'My Drive',
+        Path.home() / 'Library/CloudStorage/GoogleDrive' / 'My Drive',
+    ])
+    candidatos.extend(Path.home().glob('Library/CloudStorage/GoogleDrive-*/My Drive'))
+
+    for candidato in candidatos:
+        if (candidato / 'Fake.br-Corpus').exists():
+            return candidato
+
+    raise FileNotFoundError(
+        'Google Drive não encontrado. No computador, abra o Google Drive para desktop '
+        'ou defina FAKE_BR_DRIVE_ROOT com o caminho da pasta My Drive que contém Fake.br-Corpus.'
+    )
 
 
 def main():

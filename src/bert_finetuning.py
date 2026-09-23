@@ -14,6 +14,9 @@ from transformers import (
     TrainingArguments,
 )
 
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BERT_OUTPUT_DIR = os.path.join(REPO_ROOT, 'results', 'bertimbau_fake_br')
+
 
 def _validar_gpu():
     # 1) Diagnóstico e validação do ambiente de execução.
@@ -107,7 +110,7 @@ def finetune_bertimbau(
     y_train=None,
     y_test=None,
     model_name='neuralmind/bert-base-portuguese-cased',
-    output_dir='/content/drive/MyDrive/Fake.br-Corpus/bertimbau_fake_br',
+    output_dir=BERT_OUTPUT_DIR,
     num_train_epochs=3,
     learning_rate=2e-5,
     per_device_train_batch_size=16,
