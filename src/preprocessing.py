@@ -25,7 +25,7 @@ def _build_stopwords():
 STOPWORDS_SET = _build_stopwords()
 _lemma = WordNetLemmatizer()
 
-
+# 
 def ensure_text(text):
     return '' if pd.isna(text) else str(text)
 
@@ -38,7 +38,7 @@ def remove_special_chars(text):
     # Preserva letras acentuadas e dígitos
     return re.sub(r'[-()"#/@;:<>{}`+=~|.!?,]', ' ', text)
 
-
+# Função para normalizar espaços em branco, removendo espaços extras e garantindo que haja apenas um espaço entre as palavras.
 def normalize_whitespace(text):
     return re.sub(r'\s+', ' ', text).strip()
 

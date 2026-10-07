@@ -2,7 +2,7 @@
 
 ## Project Scope
 
-- This workspace is notebook-first and centered on [main.ipynb](main.ipynb).
+- This workspace is notebook-first. [main_preprocessamento.ipynb](main_preprocessamento.ipynb) prepares the corpus, [main_treinamento.ipynb](main_treinamento.ipynb) trains the models, and [main.ipynb](main.ipynb) evaluates them.
 - Topic: binary news classification (Real vs Fake) in Portuguese.
 - Methodology: compare traditional NLP/ML pipeline and Transformer-based models.
 - Runtime context: Google Colab remote kernel, connected to a university Google account.
@@ -19,11 +19,15 @@
 ## Environment Assumptions
 
 - Data is expected under `/content/drive/MyDrive/Fake.br-Corpus/`.
+- The preprocessing notebook adds `clean_text`, then splits the corpus. It writes `splits/treino.csv` and `splits/teste.csv` with both `texto_completo` and `clean_text`, and also writes `fake.br-preprocessed.csv`.
+- The training notebook reads that partition. Traditional models use `clean_text`; BERTimbau uses `texto_completo`. It writes traditional models under `modelos/` and BERTimbau under `bertimbau_fake_br/modelo_final/`.
+- The evaluation notebook loads the same partition, scores traditional models on `clean_text` and BERTimbau on `texto_completo`, and does not read the full corpus.
 - Drive mount is required before data access.
 - Colab sessions are ephemeral; avoid assumptions about persisted local state.
 
 ## Execution Order (Notebook)
 
+- Run `main_preprocessamento.ipynb`, then `main_treinamento.ipynb` with a GPU, then `main.ipynb` for model evaluation.
 - Run setup and dependency cells before corpus loading or text processing cells.
 - Validate path existence before long loops.
 - Re-run downstream cells after changing preprocessing functions.

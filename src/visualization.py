@@ -265,9 +265,8 @@ def plot_impacto_vetorizacao_transformer(
     }
 
 
-def plot_confusion_matrix(y_test, y_pred):
+def _desenhar_matriz_confusao(ax, y_test, y_pred, fig=None, rotulo_painel=None):
     cm = confusion_matrix(y_test, y_pred)
-    fig, ax = plt.subplots(figsize=(5, 4))
     cmap = mcolors.LinearSegmentedColormap.from_list("", ["#ffffff", "steelblue"])
     sns.heatmap(cm, annot=True, fmt='d', cmap=cmap,
                 xticklabels=['Real', 'Fake'], yticklabels=['Real', 'Fake'],
@@ -276,15 +275,31 @@ def plot_confusion_matrix(y_test, y_pred):
     ax.set_title('')
     ax.set_xlabel('Classe Predita', fontdict=_fonte_eixos())
     ax.set_ylabel('Classe Real', fontdict=_fonte_eixos())
-    for label in ax.get_xticklabels() + ax.get_yticklabels():
-        label.set_fontname('Arial')
-        label.set_fontsize(10)
-        label.set_color('black')
-    for spine in ax.spines.values():
-        spine.set_visible(False)
-    for eixo in ['bottom', 'left']:
-        ax.spines[eixo].set_visible(True)
-        ax.spines[eixo].set_color('black')
-        ax.spines[eixo].set_linewidth(1.5)
+    if fig is None:
+        fig = ax.figure
+    _aplicar_estilo_tcc(ax, fig)
+    if rotulo_painel:
+        ax.text(
+            -0.08, 1.08, str(rotulo_painel),
+            transform=ax.transAxes, ha='left', va='top',
+            fontname='Arial', fontsize=11, color='black', fontweight='bold',
+        )
+
+
+def plot_confusion_matrix(y_test, y_pred, titulo=''):
+    fig, ax = plt.subplots(figsize=(5, 4))
+    _desenhar_matriz_confusao(ax, y_test, y_pred, fig=fig)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_confusion_matrices(y_test, predicoes, figsize=(14, 4)):
+    """predicoes: lista de tuplas (y_pred, nome). O nome aparece no canto superior esquerdo de cada painel."""
+    n = len(predicoes)
+    fig, axes = plt.subplots(1, n, figsize=figsize)
+    if n == 1:
+        axes = [axes]
+    for ax, (y_pred, nome) in zip(axes, predicoes):
+        _desenhar_matriz_confusao(ax, y_test, y_pred, fig=fig, rotulo_painel=nome)
     plt.tight_layout()
     plt.show()
