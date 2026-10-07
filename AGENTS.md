@@ -2,7 +2,7 @@
 
 ## Project Scope
 
-- This workspace is notebook-first. [main_preprocessamento.ipynb](main_preprocessamento.ipynb) prepares the corpus, [main_treinamento.ipynb](main_treinamento.ipynb) trains the models, and [main.ipynb](main.ipynb) evaluates them.
+- This workspace is notebook-first. [1_preprocessamento.ipynb](1_preprocessamento.ipynb) prepares the corpus, [2_treinamento.ipynb](2_treinamento.ipynb) trains the models, and [3_avaliacao.ipynb](3_avaliacao.ipynb) evaluates them.
 - Topic: binary news classification (Real vs Fake) in Portuguese.
 - Methodology: compare traditional NLP/ML pipeline and Transformer-based models.
 - Runtime context: Google Colab remote kernel, connected to a university Google account.
@@ -27,7 +27,7 @@
 
 ## Execution Order (Notebook)
 
-- Run `main_preprocessamento.ipynb`, then `main_treinamento.ipynb` with a GPU, then `main.ipynb` for model evaluation.
+- Run `1_preprocessamento.ipynb`, then `2_treinamento.ipynb` with a GPU, then `3_avaliacao.ipynb` for model evaluation.
 - Run setup and dependency cells before corpus loading or text processing cells.
 - Validate path existence before long loops.
 - Re-run downstream cells after changing preprocessing functions.

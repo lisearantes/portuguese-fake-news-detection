@@ -111,14 +111,14 @@ def _ler_subconjunto(caminho, nome):
     if not caminho.exists():
         raise FileNotFoundError(
             f'Subconjunto de {nome} não encontrado: {caminho}. '
-            'Execute main_preprocessamento.ipynb antes desta etapa.'
+            'Execute 1_preprocessamento.ipynb antes desta etapa.'
         )
     parte = pd.read_csv(caminho)
     faltantes = COLUNAS_SUBCONJUNTO - set(parte.columns)
     if faltantes:
         raise ValueError(
             f'Colunas esperadas ausentes em {nome}: {sorted(faltantes)}. '
-            'Execute main_preprocessamento.ipynb para gravar os subconjuntos.'
+            'Execute 1_preprocessamento.ipynb para gravar os subconjuntos.'
         )
     if _chaves_split(parte).duplicated().any():
         raise ValueError(f'O arquivo de {nome} contém notícias repetidas.')

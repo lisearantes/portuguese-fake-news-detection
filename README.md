@@ -19,23 +19,23 @@ O fluxo é notebook-first no **Google Colab**, com lógica reutilizável em `src
 Execute os notebooks **nesta ordem**. Cada etapa depende dos arquivos gravados pela anterior.
 
 ```text
-1. main_preprocessamento.ipynb
+1. 1_preprocessamento.ipynb
         │
         │  gera clean_text, divide o corpus e grava splits/
         ▼
-2. main_treinamento.ipynb   (GPU recomendada)
+2. 2_treinamento.ipynb   (GPU recomendada)
         │
         │  treina clássicos + BERTimbau e grava modelos/
         ▼
-3. main.ipynb
+3. 3_avaliacao.ipynb
            avalia no mesmo teste e grava resultados/
 ```
 
 | Ordem | Notebook | Função |
 |-------|----------|--------|
-| 1 | [main_preprocessamento.ipynb](main_preprocessamento.ipynb) | Carrega o corpus, cria `clean_text`, faz split estratificado e salva treino/teste |
-| 2 | [main_treinamento.ipynb](main_treinamento.ipynb) | Treina TF-IDF + SVC/LR e faz fine-tuning do BERTimbau |
-| 3 | [main.ipynb](main.ipynb) | Carrega splits e modelos, avalia qualidade e custo, gera comparação |
+| 1 | [1_preprocessamento.ipynb](1_preprocessamento.ipynb) | Carrega o corpus, cria `clean_text`, faz split estratificado e salva treino/teste |
+| 2 | [2_treinamento.ipynb](2_treinamento.ipynb) | Treina TF-IDF + SVC/LR e faz fine-tuning do BERTimbau |
+| 3 | [3_avaliacao.ipynb](3_avaliacao.ipynb) | Carrega splits e modelos, avalia qualidade e custo, gera comparação |
 
 Não pule etapas: o treinamento não refaz o split, e a avaliação não treina de novo — ambos leem o que já está no Drive.
 
@@ -51,7 +51,7 @@ Não pule etapas: o treinamento não refaz o split, e a avaliação não treina 
 
 ### Passo a passo
 
-1. **Pré-processamento** — abra `main_preprocessamento.ipynb`
+1. **Pré-processamento** — abra `1_preprocessamento.ipynb`
    - Runtime: CPU basta
    - Monte o Drive e execute todas as células
    - Saídas esperadas no Drive:
@@ -59,7 +59,7 @@ Não pule etapas: o treinamento não refaz o split, e a avaliação não treina 
      - `Fake.br-Corpus/splits/teste.csv`
      - `Fake.br-Corpus/fake.br-preprocessed.csv`
 
-2. **Treinamento** — abra `main_treinamento.ipynb`
+2. **Treinamento** — abra `2_treinamento.ipynb`
    - Runtime: **GPU** (obrigatório/recomendado para o BERTimbau)
    - Monte o Drive e execute todas as células
    - Saídas esperadas:
@@ -67,7 +67,7 @@ Não pule etapas: o treinamento não refaz o split, e a avaliação não treina 
      - `Fake.br-Corpus/bertimbau_fake_br/modelo_final/`
      - `Fake.br-Corpus/resultados/custo_treino.csv`
 
-3. **Avaliação** — abra `main.ipynb`
+3. **Avaliação** — abra `3_avaliacao.ipynb`
    - Runtime: GPU recomendada para inferência do BERTimbau
    - Monte o Drive e execute todas as células
    - Saídas esperadas:
@@ -85,9 +85,9 @@ Não pule etapas: o treinamento não refaz o split, e a avaliação não treina 
 
 ```text
 .
-├── main_preprocessamento.ipynb   # etapa 1 — corpus e split
-├── main_treinamento.ipynb        # etapa 2 — treino
-├── main.ipynb                    # etapa 3 — avaliação
+├── 1_preprocessamento.ipynb   # etapa 1 — corpus e split
+├── 2_treinamento.ipynb        # etapa 2 — treino
+├── 3_avaliacao.ipynb                    # etapa 3 — avaliação
 ├── requirements.txt
 ├── AGENTS.md                     # convenções para agentes/edição
 ├── README.md

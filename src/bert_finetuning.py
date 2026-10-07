@@ -51,7 +51,7 @@ def _validar_gpu():
 
 def _preparar_split_e_datasets(df, X_train=None, X_test=None, y_train=None, y_test=None):
     # 2) Validação dos dados e da divisão treino/teste já gravada.
-    # O fine-tuning reutiliza a partição de main_preprocessamento.ipynb e não cria outra.
+    # O fine-tuning reutiliza a partição de 1_preprocessamento.ipynb e não cria outra.
     # X_train e X_test são o texto original, não o clean_text dos modelos clássicos.
     if 'df' not in globals() and df is None:
         raise RuntimeError(
@@ -69,7 +69,7 @@ def _preparar_split_e_datasets(df, X_train=None, X_test=None, y_train=None, y_te
     if X_train is None or X_test is None or y_train is None or y_test is None:
         raise RuntimeError(
             'A divisão treino/teste deve ser fornecida. '
-            'Execute main_preprocessamento.ipynb para gravar Fake.br-Corpus/splits/.'
+            'Execute 1_preprocessamento.ipynb para gravar Fake.br-Corpus/splits/.'
         )
 
     # 3) Mapeamento de rótulos para o formato esperado pelo Transformers.
