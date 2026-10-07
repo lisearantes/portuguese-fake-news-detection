@@ -98,8 +98,7 @@ Não pule etapas: o treinamento não refaz o split, e a avaliação não treina 
     ├── bert_finetuning.py
     ├── evaluation.py             # métricas e persistência
     ├── recursos.py               # tempo, RAM, VRAM, custos
-    ├── visualization.py
-    └── pipeline.py               # utilitário de conexão ao Drive
+    └── visualization.py
 ```
 
 ## Layout esperado no Google Drive

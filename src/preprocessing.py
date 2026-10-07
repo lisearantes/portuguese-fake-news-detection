@@ -3,16 +3,6 @@ import pandas as pd
 import spacy
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from textwrap import fill
-
-LARGURA_TEXTO_PADRAO = 110
-MAX_COLWIDTH_DF = 140
-
-
-def wrap_texto(texto, largura=LARGURA_TEXTO_PADRAO):
-    if pd.isna(texto):
-        return ''
-    return fill(str(texto), width=largura)
 
 
 def _build_stopwords():
@@ -25,7 +15,7 @@ def _build_stopwords():
 STOPWORDS_SET = _build_stopwords()
 _lemma = WordNetLemmatizer()
 
-# 
+
 def ensure_text(text):
     return '' if pd.isna(text) else str(text)
 
@@ -38,7 +28,7 @@ def remove_special_chars(text):
     # Preserva letras acentuadas e dígitos
     return re.sub(r'[-()"#/@;:<>{}`+=~|.!?,]', ' ', text)
 
-# Função para normalizar espaços em branco, removendo espaços extras e garantindo que haja apenas um espaço entre as palavras.
+
 def normalize_whitespace(text):
     return re.sub(r'\s+', ' ', text).strip()
 

@@ -117,9 +117,10 @@ def finetune_bertimbau(
     Retorna um dicionário com o Trainer, o modelo, o tokenizer e os artefatos finais.
     """
     # 1) Validação do ambiente de treinamento antes de iniciar o experimento.
-    if output_dir is None:
-        from .pipeline import conecta_drive
-        output_dir = str(conecta_drive() / 'Fake.br-Corpus' / 'bertimbau_fake_br')
+    if not output_dir:
+        raise ValueError(
+            'Informe output_dir (ex.: Fake.br-Corpus/bertimbau_fake_br no Google Drive).'
+        )
     _validar_gpu()
     if df is None:
         raise RuntimeError('O dataframe df deve ser fornecido para o fine-tuning.')

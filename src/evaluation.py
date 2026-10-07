@@ -2,8 +2,6 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
-from sklearn.svm import LinearSVC
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     classification_report,
     accuracy_score,
@@ -15,18 +13,6 @@ from src.recursos import (
     montar_comparacao,
     persistir_comparacao as _persistir_comparacao_csv,
 )
-
-
-def treinar_svc(X_train, y_train, X_test):
-    modelo = LinearSVC()
-    modelo.fit(X_train, y_train)
-    return modelo, modelo.predict(X_test)
-
-
-def treinar_lr(X_train, y_train, X_test):
-    modelo = LogisticRegression(max_iter=1000, solver='liblinear')
-    modelo.fit(X_train, y_train)
-    return modelo, modelo.predict(X_test)
 
 
 def extrair_metricas(y_true, y_pred, nome_modelo):
